@@ -1,0 +1,743 @@
+#+TITLE:Research sprint 2022-07-06 - 2022-07-15
+* Project Description
+** Sprint 1 project description
+Investigate broad peaks in the fitness/loss landscape.
+- What internal structure in the trained system is associated with broad peaks?
+- Can we visualize the associated internal structure?
+- What’s the function of the associated internal structure?
+- How does the associated internal structure couple to things in the environment?
+
+(You might find Vivek's post helpful on the theory side.)
+https://www.lesswrong.com/posts/GfEmhoyS6ztk7GQAp/how-to-think-about-overparameterized-models
+
+Treat these as prompts; you're not meant to definitively and comprehensively answer them in the next week-and-a-half. Bear in mind the general principles (we want to build a theory-experiment feedback loop, derive/discover the ontology, have an intuitive story in mind, open the black box, etc), and go build/discover/conjecture/prove/write something cool!
+** Sprint 2 project description
+For sprint 2, I'm going to give everyone the same project and see what happens. Everyone's assignment will be to figure out how to operationalize the "broad peaks induce data compression" argument.
+
+Here's the intuitive argument: I train some neural net to reproduce the training data. Conceptually, the trained net has to "store" all the relevant information from the dataset in its weights. If it "compresses the data", then it should be able to store the data using fewer weights, so more weights are free to vary without increasing loss much. "Lots of weights left free to vary without increasing loss much" = broad peaks. Or, to put it differently: there are more parameter-values for which the net reproduces the training data using a more compressed representation, so training is more likely to find a more compressed representation.
+
+So, the assignment is to figure out how to operationalize things like:
+- "the representation of the data" (or the embedding of that representation in the weights)
+- what it means for the representation to "use" some parameter-degrees-of-freedom but not others (bear in mind that "weights" might not be the right ontology, e.g. maybe it uses some directions-in-parameter-space but not others, or maybe something else entirely)
+- what it means for two different parameter-settings of the net to "use the same representation" (or, more generally, to "do the same thing" internally)
+ 
+When operationalizing this, we're looking for three main things:
+- Testability: the operationalization should be in terms of things which you can directly look for in a trained net (possibly relying on some approximations). This is mainly to make sure the operationalization stays grounded.
+- Generalizability: the operationalization should be clearly generalizable to new kinds of systems which don't look like the kinds of systems we're currently working with (maybe imagine biological systems). We're not looking for a narrow ad-hoc model, here.
+- Provability: using the operationalization, we should be able to turn the intuitive argument into a mathematical proof (up to approximation/events of high probability). We should be able to argue mathematically that training probably finds more compressed representations.
+
+*** Additions
+You should try to make modularity tools
+*** My Notes/Questions:
+**** Reproducing the training data means that we get zero loss on the trainig data.
+**** What is meant with the representation of the data?
+Are we here talking about how the data is embeded into the network (the relevant pices of the data)?
+** Project description rewrite
+Figure out how to operasionalize: "bread peaks induce data compression". The peaks here are in the loss landscape of a computational structure, that has some parts fixed and some parts are learnable parameters. E.g. in a neural network, which weights connect to which neurons is fiked, but value of the weights can be learned. The loss landscape is the parameter space plus one additional dimension for the loss.
+
+* Reading
+** [Article] Information Loss --> Basin flatness
+*** Questions
+**** What is a solution manifold
+Do solution manifolds lie on specific behaviour manifolds or all manifilds (probably the first)
+***** What does it mean that higher dimentional solution manifolds drain a larger regioun of parameter space
+**** What sort of training setup are the results from?
+Do they apply very broadly or are they about using a network of a specific size.
+*** Notes
+**** Behavioural manifolds are about **identical** behaviour
+**** behavioural manifold are typically of dimension N - k where N = |parameters|, and k = |dataset|
+** retreat jsw talk 1
+*** [00:00-00:15] Neural networks compress data
+When we use a neural net, on some task, then one parameter assignment that performs well consists of hardcoding in the data. We could have some mechanism to match what input we are actually getting, and then based on that spit out the exact output that is expected for this input.
+
+This would be similar to the network encoding a switch statement, where each case in the switch statement just returns a constant.
+
+If the neural network does not store the literal data, but has a mechanism to just store a compressed representation, that is then decompressed, it will need to store less data overall, for most data, as most data is highly compressible (e.g. an image), and there is only constant overhead for the decompression algorithm.
+
+* Meetings
+** <2022-07-07 Thu 03:00> 
+*** Go through and make sure we thoughly understand the problem statement
+*** Talk about ideas we have about it (I wrote some down)
+*** Orga
+**** It is not clear that the roles still make sense to use in a 2 person team. Defnetly I can help out with programming, and I think we should both do theory research.
+*** Possibly spend some time coming up with more ideas
+*** Create tasks that are preferably each at most 1h long
+*** Assign tasks that we will work on untill the next meeting
+*** Schedule the next meeting.
+** <2022-07-08 Fri> 
+*** Topics theory
+**** In vivek's article, he defines a behavioural manifolds. These manifolds correspond to identical behaviour (not approximately identical behaviour).
+**** It is unclear what compression actually means
+***** The notion of compression of need a certain ammount of memory (data as lookup table VS inputs + network) to store data is maybe not what is meant
+***** Consider a network that implements more computations than neccesary. Wolud this network still be considered to compress the data.
+If we think about compresssion in terms of the first definition, then we would have.
+**** We can find the simplest network by the following algoritm
+1. Set n to 0
+2. for a fixed archetecture, iterate through all possible weight assignments, using only n weights leaving all other weights unused.
+3. If we find a network with the desired input output behaviour, then STOP.
+4. Else returt to step 2, and set n to n+1
+
+What it means for a weigth to be unused can have multiple interpretations. It could mean that they are:
+- Set to 1
+- Set to 0
+
+Maybe thinking about weights like this is the wrong ontology though.
+
+**** How network stores data
+***** Would it make sense to define the behaviour of the network as some sort of computation trace
+***** Information theory might be useful to think about what comrpession means
+**** Can we construct a counterexample, by having a way to find broad peaks that are not comrpessible?
+*** Topics experiments
+**** It is still unclear what experiments we should actually run.
+It seems that we should first make a theory and then make predictions with it, and then try to falsify/confirm our predictions.
+
+If we really can't come up with any theory then it might make sense to come up with experiments such that we can get some inputs that we can use to start constructing a theory.
+** <2022-07-11 Mon>
+*** It seems this far we have not directly tackeled the problem. We should reevaluate the problem statement and make sure that we understand it.
+*** Talk about my latest idea
+*** Go quickly through ideas and evaluate them.
+*** Orga
+**** I still need to do travel stuff. I need a t least one day for this. I will fly on friday. So we better hurry up.
+*** If Thomas did not show up, write him ask him for his plans for the scholars program and if we consider that he left the team (I need to tell john if he needs to find another person for the scholars program)
+** NEXT
+*** Go meta on what to do (sorting ideas is hard)
+*** We seem to switch around ideas a lot, not keep track of them, and not explore them fully
+** <2022-07-13 Wed> 
+* TODO Tasks
+** <2022-07-06 Wed>
+*** TRANS J - What are broad peaks defined in relation to (it depends on the data and archeticture and how many parameters you have)
+*** J - Is compression the same as being able to remove parameters
+*** What does datacompression actually mean
+*** Come up with a list of the sub ideas that we want to operationalize
+**** Determine task dependencies
+*** How can you design the loss landscape
+*** [#A] How is the data represented inside the network [break]
+**** What would a solution to the question look like
+***** What would make us confident that we found thet solution
+****** 
+***** J - Generate hypotheseis for what the solution could be
+*** [#A] How can we tell if there are broad peaks in the loss landscape [break]
+*** TRANS J - How to extract the minimal prgram (description length) based on (???)
+We can't extarct the minimal program based on behaviour
+**** Measure compression in terms of what can be removed
+*** TRANS J - Does a broad peak correspond to dropout being possible
+*** TRANS J - My idea about defining a compression as programm length (wheceh input is part of the programm)
+*** DONE J - Setup Kanbanboard
+    CLOSED: [2022-07-07 Thu 06:03]
+*** DONE J - Put this doc into gdocs
+    CLOSED: [2022-07-07 Thu 06:03]
+*** J - What happens when the broad peak is stretched such that you need to vary 2 or more parameters at the same time in order to minimally increase the loss.
+*** C - Do simple dataset and look at what the neural network learns
+**** Outcome: We can look at the weights and better understand how the neural network represents the data
+**** Train the network on different boolean functions and look at how the network is structured
+*** C - How can you visualise the loss landscape (computationally)
+**** t-SNE
+**** Visulize the loss landscape for different model sizes (assuming a fixed training dataset)
+*** C - Keep track of the trajectory through the loos landscape during training by recording teh jacobian (to see if we where going down a broad peak)
+*** C - Use the Shur complement to check if the neural network is implementing a specific function
+** [#A] <2022-07-12 Tue> TASK: Think abotu Modularity tools
+*** Reveres mixing of functionality
+*** find the function for function in neural networks
+*** Think about toher approaches
+** <2022-07-13 Wed>  
+*** Task
+When does information get embeded in the algorythm/parameters of the original data. Get a better understanding of what properties an operationalization sholud capture.
+
+How is information stored. And how does this tell us about how the operationalization should look.
+
+**** Keep in mind the goal is to get closer and closer to a good operationalization
+**** Look at evolution
+***** Taste is a good predictor if food is poisonous, even though the human is not consciously thiking about it.
+
+**** Look at when computer programs represent the same algorithm
+**** WHen do copiled computer represent the same algorithm
+***** If you use intructions set that differ that there should be different algorithms
+**** Confusion: What does it mean that the data is captured
+**** [#A] Think about: Why is it that I have not come up with any operationalization.
+**** what thinks are we (and I) confused about (make a list)
+*** Solution
+**** Evolution selects things that says around
+If the livetime of an organism is finite, it needs to reproduce to have systems of its kind stick around. A certain type of organism does not reproduce there will be a point where there are no more organisms of that type.
+
+So evolution acts like a filter on organisms. Types of things that manage to stick (e.g. though reproduction) around will stick around.
+
+The environment will be a certain way, and will determine which things will stick around. We can think of the environment being described by a point in configuration space of the environment. Organisms that do manage to stick around need to perform computation that depends on the environment state. This computation needs to lead to actions that make the type of organisms stick around.
+
+This gets complicated because the environment constantly changes. Actions of an organism change the environment, other organisms actions change the environment, and other events (e.g. asteroid impact) change the environment.
+
+So the algorithms in this case need to lead to making the algorithm stick around. Alorithm can here interpreted very broadly. In some sense a self replicating molecule can be though of as an algorithm.
+
+The algorithm does not encode the point in the configuration space of the environment. A system in the environment (that is not the environment) can't replicate the entire environments state, because then it would be at lesat as big as the environment.
+
+Maybe we can think of this as a general version of what we do when training machine learning systems.
+
+**** Approach: Iteratively find properties
+***** We can use previous properties to define new properties. E.g. we could start to look at the dependency graph of a computation, and then define equivalences between these graphs
+***** For each property we can come up with a couple of real world examples, where this property would imply that we have the same computations happening.
+***** 
+**** We can desingn a high level language for defining neural network computations. The goal is to get higher and higher level description language of what a neural network is doing.
+For each higher level specification, there would be mulitple networks that would be considered to be an implementation of that specification.
+**** Maybe we should use as a heurisic-goal, that we should build up properties to get as close as possible to that we can check if two algorithms have the same input output behaviour.
+An effective way to check for the same input output behaviour be very good target, and would be good in its own right. Having an actually computable algorithm, that is not, just check all possibel inputs, for check if two networks have the same input output behaviour would be great. Getting that algorithm would probably tell us a lot about the structure.
+
+This sort algorithm might actually be findable for neural networks. Here I am just thinking about dense feed forward neural networks.
+
+**** Consider toy archetectures or even simpler systems
+We might even be more restrictive and consider only very specific archetectures (that might not even be used at all, and might be very strange), to make the problem easier.
+
+E.g. what would it look like for two networks that are just two neurons connected to do the same computation (consider there just being one weight, and there being a weight and a bias).
+
+**** High level compiler framing
+We can think of each of the possible sets of properties as
+
+* Theory
+** [#A] How to determine if networks use the same computations
+*** Iteratively build up equality of computations by adding more properties
+We want to check when computatinos are equivalent to one another. This would allow us to induce a partial order of abstraction. The following specefies a procedure for bulding up this order.
+
+We restrict ourself to the case of comparing two neural networks that have the same archetecture but possibly parameters set to different value. First look at the two extremes. We can say that two neural networks implement the same computations if they are exactly the same, meaning they have the same parameter assignments. On the other extreme, we can consider two networks the same if their input/output behaviour is the same.
+
+We now start form the "bottom" (equal parameter assignmenst means equal networks) and work our way up. We do this by adding properties that correspond to the intuitive notion of "calculating the same algorithm". When we have defined a property, we can start to use it when defining other properties. If we consider the powerset of all the properties, then this gives us a graph, where each node corresponds to a particular abstraction about how to think about when computations implemented by a neural network are equal.
+
+Here is a list of properties that don't change computational equality we have already considered:
+- Switch neurons in the same layer
+- Duplicate computation used in the same way (e.g. instead of computing f(x) compute 0.5 * f(x) + 0.5 * f(x))
+- The dependency graph of computations is equal (e.g. in f(g(x), h(y)) it does not matter if we calculate g or h first)
+- Only parameters that don't contribute to the computation differ (e.g. some computation happens but it never changes the output, because it is multiped by a zero weight at the end)
+- Computations vary by constant factors (e.g. f(x) = (g(x*2))/2 in such a way that the computational steps of g are the same as the ones from f, only that they are always twice as large, or something like that)
+
+If we consider that we have some set of parameter assignments P, for the used neural network archetecture, then each possbile set of properties induces a partitioning on P. The idea is that as long as we have properties that make intuitive sense, that are not identical
+
+Searching for which of our properties are implied by other properties and figuring out what properties are implied by which sets of properties might be valuable. For example, it might be the case that properties that imply many desired properties, that we thought of, imply many desired properties that we have not thought of yet.
+
+The goal is not to find the perfect set of properties to get the perfect notion of algorithmic equality, rather the idea is (at least in the begining) to find as many properties as possible that could lead to useful notions of equality in some contexts. We operate under the assuption that it might be the case that different notions of computational equality will be useful in different contexts.
+
+So we are building up a set of properties that we can use to check if two neural networks of the same archetecture implement the same computation. Any subnetwork in a neural network can be seen as a neural network of a particular archetecture. That means this procedure can also be applied to any subnetwork of a neural network.
+
+We could also start to add properties for when computations differ. However, we are not clear yet on how this should be combined with properties of when computations are the same. This might lead to contradictions. We might be able to utilise this in a desirable way though. Another disadvantage is that we don't get nice partitions out, but just get to say which elements can't be in the same partition.
+
+Properties like this would be:
+- Computations with different input output behaviour are different
+
+*** Sameness of algorithms
+**** Switched neurons are same layer
+**** Use same computation is the same
+**** Parameters that are not used (e.g. multiplied by zero)
+**** When computing AND, there are many networks that corresponds to computing it, but they still all can be thought of as computing AND
+**** Different input output behaviour corresponds to different algorythms
+**** different internal
+**** If you "multiply everything by 2" then it is the same
+**** Wee need to think of the entire enterpeter chain (what is computation)
+***** Think of the neural network as a language
+***** Input output behavior is the higest level of abstraction
+**** There are multiple levels of abstraction we can use
+***** Do the same exact computations (in neural net language)
+***** Same input output
+**** You can't go down from same inputs imply same exact computations
+***** Then your abstraction would be as complicated as the exact computatios (so it does not get you anything)
+**** There is no strict hirachy of abstractions
+*** Interpretation chanin of abstraction
+**** Wee need to think of the entire enterpeter chain (what is computation)
+***** Think of the neural network as a language
+***** Input output behavior is the higest level of abstraction
+**** There are multiple levels of abstraction we can use
+***** Do the same exact computations (in neural net language)
+***** Same input output
+**** You can't go down from same inputs imply same exact computations
+***** Then your abstraction would be as complicated as the exact computatios (so it does not get you anything)
+**** There is no strict hirachy of abstractions
+** [#A] [FIND] 
+
+** What does it really mean that an input is compressible?
+Does it mean that we can just drop certain inputs completely. It does not seem so. We could have that inputs are conditionally dependent on other inputs.
+
+E.g. we have two binary intputs A, B. If A is 0 then we can determine the output. If A is 1, then we need to look at B to determine the output. This seems to be related to hamming encodings. A similar thing should hold for non binary inputs.
+
+If we visualize this program as a lookup table then we would not need 4 rows but only 3, where we match the first inital segment that we find.
+
+There seems to be a lot more possibilities in which the input could be compressed. Also in this example, how much is the data actually compressed? The program to match initial segments might be more complicated than the programm that just checks equality? Maybe this example is too simple. That factor would probaly just be a constat very small factor for more complex examples.
+
+** There could be parameter values that we can vary without affecting the loss even without any compression happening.
+Just imaging having a small training data set and a huge network.
+
+** It seems that we should be able to construct a network such that it does compress the data, but no weights can be varied without increasing the loss.
+The question is if these types of network would show up in practice.
+** Maybe a good approach is to geveralize the problem to arbitrary systems, and the specilize it again to systems that we can more easily run experiments on. E.g. maybe we could evaluate the same argument for tree search. 
+TODO write the task in a more general form
+** Formulate when a network compresses data
+Given a dataset $D$ with $n$ entries, we say that a network of expressiveness $e$ is compressing the data if there does not exsist a network of expressiveness $e$ that perfectly reproduces a dataset $D'$ of size $n$, where $D'$ is uncompressible.
+
+Undefined terms
+- expressiveness of a network
+- uncompressible
+
+** Data storage formulized as computation trace
+It seem that we could also use a decision tree to learn some specific data. Once we have a leraned tree, we can check what "decision path" we take for a given dataponit. That path then represents in some sense the data. [Sidenote: maybe we could do something similar for the weights of a neural network?]
+
+Now intuitively the tree could compress the data, if all the data is reproduced. For example, if the data is right, then the tree colud simply implement the id function. Hovever, even if you could describe the data with the id function, you can still make the decision tree arbitrarly complex. Any tree will repreduce the data, as long as all leaves have the same value, the one that matches the data.
+
+Now 
+** Solomonov induction to find the
+** Extracting the smallest network
+To find the smallest K-komplexity programm that has some desired input output behaviour, use the following algorithm, where we net n = 0:
+1. Generate all programs of length n
+2. Check if any program has the desired behavior, if it does that is your program. STOP.
+3. If no program was found repeat from step with n ← n+1
+
+A similar procedure could be used to find for a given dataset, the minimal network. Minimal network here colud means multiple things.
+- The maximum number of weights are set to 1
+- maximum number of weights are set to 0
+- maximum nuber of paramers can be removed without changing output
+- We are in the broadest peak / we are in the network that most compresses the data
+
+** Is the smallest network the one with the largest peak?
+
+** Broad peaks as data compression
+
+*** Network sice
+It seems that the broadest peak in the loss landscape will actually compress the data. The inverse implication does not seme to hold. It seems that you can have norrow peakes (if the network is "small compared to complexity the data"), which correspond to networks that still compress the data.
+
+Broad peaks do not neccesairly induce data compression. If you have many more parameters that you need to represent the data, you could represent the data in a very inefficient format in the network, and still have weights that can vary without effecting the loss.
+
+So it seems that we need to take into account the size of the network when we are thinking about if a network compresses the data.
+
+** Conuterexample to that broad peaks induce compression
+Maybe you could have network archetecture such that there are many copies of a specific circuit. They could be aranged in such a way that you could vary the weights and still get the same results, because the network would be such that when one circuit is modified, you could fall back on the next (the network would us the next to ensure that the output is still correct, always when varying a specific parameter).
+
+In this case, that the peak is broad depends on a lot of the network.
+
+Getting a way to construct broad peaks might give us a method to construct a very board peak, but the broadness of the peak is a property of all of the network, meaning that the broadness is not compressible in terms of having weights that you can set to zero. And also not in terms of the number of weights that you need to store.
+
+** How does compressibility of a dataset vary with its cardinality
+Consider a dataset $D$ composed of 2-touples with type $\{1..3\} \times \{1..3\}$. Now consider that $D$ is uncompressible (e.g. it would probably uncompressible for $|D| = 1$). Is there some $n \in \mathbb{N}$ such that there does not exist a dataset $D'$ with $|D'| = j$, where $j > n$, with the property that $D'$ is uncompressible? This would mean that there exists some set of uncompressible datasets that are maximally large $D^*$ (they have cardinality n).
+
+** Striped network
+*** Given a network, what is the "most stripped down" version of it, that still implements the "same computations structure".
+
+** [#A] Detecting Network modules
+We can view a neural network as containing many subnetworks. If we think of the network as a graph, then we can think of the set of all of the connected subgrahps. Each of these subgraphs has computational behaviour associated with it. We now want to compare the computational behaviour of these subgraphs. We want to compare them over ranges of inptus, meaning that we want to know, which computational behaviours overlap over which inputs.
+
+We want this information in order to calculate the "module redundancy" of the network. For example, consider that there are two subgraphs $A$, $B$. They have the following computational behaviour:
+
+$A(x) = B(x) = x^2$
+
+If $A$ and $B$ are in the same layer, it would seem that you would only need either $A$ or $B$. All computations that make use of $A$ could start to use $B$ instead, making it possible to remove $A$ entirely from the network. The same works for replacing $B$ with $A$. It is not neccesary that $A$ and $B$ are in the same layer. The important thing is that "layer dependencies" are satisfiable. With that I mean that if $A$ is in layer one, and $B$ is in layer 10, then any "pipeline" through the network that reaches at layer 10 a point in the pipeline where $f(x) = x^2$ needs to be computed, can't use $A$, but can use $B$.
+
+We also don't need $A(x) = B(x)$. If we only care about good performance on the training data (e.g. replicating it), we can simply ensure that in any pipeline, the result at each step in the pipeline is unchanged. For example, if we have a dataset with two datapoints, then we will only have two computational pipelines. In the pipelines for step 5, we need to use the function $f(x) = x^2$.
+
+Let $P^{(n)}$ denote the n-th pipieline. Let $P^{(n)}_m$ denote the result of the m-th computation step in the pipeline. So now we have that $P^{(1)}_5 = \left(P^{(1)}_4\right)^2$ and $P^{(2)}_5 = \left(P^{(2)}_4\right)^2$. To get zero loss we don't need $f(x) = x^2$, but only a function:
+
+$$
+g(x) = \begin{cases}
+        x^2, &\text{for } x = P^{(1)}_4} \lor x = P^{(2)}_4}\\
+        anything, &otherwise
+\end{cases}
+$$
+
+
+TODO
+- Define pipeline
+- Add for each example an example another of how it could look in a simple feed forward neural network.
+
+For all inputs $i \in I$, for each subpart of the network (that is activated) compute the input output behaviour.
+
+Now compare all these subparts.
+
+** [#A] Finding minimal network that reproduces uncompressible data
+Given some uncompressible dataset D we can iteratively train networks that get bigger and bigger until we find a network that manages to reproduce the data.
+
+For uncompressible data we can use `D : (vec {0,1} n, vec {0,1} n)`, where `vec A j` is a vector of elements from A, of length j. To generate the pairs, choose for each d ∈ D a random d' ∈ D to create (d, d').
+
+Let the network have n input neurons and n output neurons. Start with the network that just densly connects the inputs to the outputs. Check if this networks learns to reproduce the training data. If it does iteratively double the number of parameters, e.g. by adding new hidden layers or increasing the number of neurons in each hidden layer. In this way we can do binary search to find the minimal network of a particular archetecture, meaning that when we find a network that reproduces the training data, we can dowscale that network again by half of the last increase in size we made.
+
+When checking if the network reproduces the training data, you may do multiple training runs.
+
+Now we can look at the loss landscape.
+PREDICTION: There will be no broad peaks
+
+Then we can use the same network and make the data more compressible and see how the loss landscape changes.
+PREDICTION: The peaks will get broader and broader. If only a bit of data is changed, the loss landscape will change relatively smoothly, instead of jumping to a completey different configuration.
+
+If we would find that we get broad peaks even for the incompressible data (which is only approximately incompressible the way I proposed generating it, maybe that could be made more precise with information theory), then it would be evidence against that broad peaks correspond to data-compression.
+
+** [#A] Determining optimiality of compression
+Given a Network $N$ and a dataset $D$ we want to determine how good at compression it is compared to the ideal compression network $N^*$. The ideal compression network is the smallest network that reproduces the data. We use the previous approach descibed in [[*Finding minimal network that reproduces uncompressible data][Finding minimal network that reproduces uncompressible data]] but now with $D$ instead of some uncompressible dataset.
+
+The smallness of a network is not well defined. It could be smallest in number of parameters, layers, neurons, or neurons per layer (if every layer has the same number). We will leave this unspecified for now. For now it is only important that the archetecture of $N$ is as close to $N^*$ as possible. The main difference will be that $N^*$ will normall be smaller than $N$.
+
+Now we use the approach described in [[*Detecting Network modules][Detecting Network modules]], to find out all the computation pipelines that $N$ and $N^*$ are using. First we check if there is superfulous computation happening in $N$ (e.g. there is a duplicate circuit that could be elimintaded). Redunancy makes the network worse at compression, i.e. we don't use minimum ammount of parameters neccesary to reproduce the data. We now take the network that has the least redundancy. (There might be other filter steps that should be done.)
+
+We now check what pipelines $N$ has, and compare them the pipelines of $N^*$. If they are the same or similar than this is an indicator that $N$ is optimal at comressing. Though if they are not it does not neccesairly mean that that $N$ is bad at compression.
+
+When training $N$ we might be able to use a regularisation term, that incentivises to use as few parameters as possible, e.g. through incentivising that as many connections correspond to an identity map. E.g. if there is a redundant layer, then we could incentivice that the neurons in the next layer have exactly the same outputs as the previous layer. Then we would get the network to use as few parameters as possible. More standart regularisation techniques might also work here, and schould probably be tried first.
+
+We could then remove the unused parameters and get a better idea of what the network is actually doing.
+
+The idea here is that we choose $N$ from broad peaks, and then evaluate how good the network from the broad peak is in doing compression.
+
+We can also check if $N^*$ corresponds to a broad peak.
+
+** [#B] Broad Peaks do not neccesitate data compression but the broadest peaks might
+The fact that we are in the loss landscape at a point, such that we can move around while still reproducing the training data (i.e. we are on a broad peak), does not neccesairly mean that the network is compressing the data. We can imagine a network that is large enough to just hardcode the entire training data into it's weights, such that the network gets zero loss and reproduces the data. We can now add additional weights such that we broaden the peak. Add a neuron A in an arbitrary layer that is not the last. Add another neuron B in one layer after A. Set all outgoing connection weights from neuron A and neuron B to zero. Clearly this does not change the behaviour of the network. Changing the connection weight between A and B does have no effect, which means that we "broadened" every point in the loss landscape. This includes any optimum.
+
+In this setup we have one parameter that we can vary independently of any other parameter, which corresponds to a adding a line (2-D hyperplane) in the loss landscape to every point, such that all points on the line will have constant loss. By repeating this procedure we can make every point in the loss landscape arbitrarly broad. Each application of the procedure results in increasing the dimensionalitiy of the hyperplane that we can move on, without changing the loss.
+
+However we also add lots of parameters that we have assumed to be zero this far. If we allow them to vary as well, then we increase the dimentionality of the loss landscape again.
+
+Because with this argument we increase the dimentionality of every point, meaning that we make every point broader equally, we can't really say that broadness in general is not an indicator for compression. If we compare the broadness of the artificially innflated loss landscape, we still prehaps have it that the more broad the peaks are, the more comressed the reprentation we find is.
+
+TODO
+- Tilt the hyperplane (i.e. make 2 paramaters depend on each other).
+- Think about if we can only broaden a specific optimum peak
+- Think about how to test this experimentally
+- Think about why the original intution migth still be a useful concept in practice
+
+** [#A] Iteratively build high level strucutre describing actual computations in a NN
+Come up with a set of algorithms C that convert a function into a neural network (ideally with C we would be able to generate all neural networks that implement the function up to size n of neural networks. An approximation of this would also be fine.). Have a set of functions F that we think are likely to be implemented by neural networks.
+
+Generate {c(f) | f ∈ F and c ∈ C}.
+
+Have a search procedure that detects if a neural network uses a certain sub-network. This can be very approximate (false positives will be filtered in the next step).
+
+For each match check with the shur complement if the subpart of the network is actually implemented by the network.
+
+Have a network-subpart merger function that can merge two networks together. Have a funcion merger procedure that can merge two functions together.
+
+Now combine all of the subparts of the network that are connected, and also merge the original functions that the combined parts of the network are described by the combined functions (using the previous described functions).
+
+Check again with the shur complement if we are capturing the internal structure of the network, with the combined functions.
+
+Repeat this procedure trying to describe as much of the network as possible.
+
+---
+
+We conjecture that the network uses many functions that are dificult to discern from the weights of the network alone, but that have easy descriptions. If this is the case, then this approach could increase interpretablity. If we can identify higher and higher level functions that are used by the network, we might greatly increase interpretability.
+
+*** Direct checking
+We could also directly check if a subpart of the network corresponds to a certain behaviour that can be described by some simple function for all the possible inputs of the traninig data set.
+
+*** By network
+We might be able to learn the function of program to network with a machine learning procedure also. It might be important though to actually make the network do the same computation as the function (at least approximately, or over a range, and at the very least for all training data inputs).
+
+*** Overlapping circuits
+The search procedure should be able to find circuits that are overlapping. E.g. if we have a circut that execute multiple functions based on the [input/input range], then our search algorithm should still be able to spot that the network is using the function.
+
+*** Chained search
+What computation a network is performing might depend on how the data was processed previously. E.g. if we first transform the data with t, then do some computation f, and then use t⁻¹ on the data we get out of f, then if t⁻¹ ∘ f ∘ t = g, f might look very different from g, so that it is hard to identify.
+
+There might be other things like this that would make it hard for this procedure to work.
+
+*** Train networks to get the function to network mapping
+
+*** TODO
+- What should C be
+- What should F be
+- What should the search procedure be
+- Understand if we can actually use the shur complement in this way
+
+** Reduce dimensions
+Detect parameters
+
+** Idea: Unrolling Networks
+Buck said something about that all network archetectures are about sharing weights, and that you can always get the same functionality with a feed forward neural net. If that is correct, then that suggest that you can "unroll" any neural network into a feedforward neural network.
+
+That means that any techniques you have for feedforward neural networks are applicable for any networks, at least in principle (computationally it might be too much to handle to be practical).
+
+** Compress network by using minimal number representations
+If we are in a broad peak, then we can choose many parameter values without increasing loss much.
+
+Set a loss threshold T. Define a datatype of number that is arbitrary precision. E.g. we can have a 23 bit number.
+
+Now define a procedure to find the network in the basin that has loss smaller or equal to T, that uses the least number of bits to store.
+
+*** TODO Think of having distributitons over parameter space 
+
+** Partioning of losslandscapes based on optimality peak reached
+We can create a partitioning of where poins in the loss landscape converge to. We can think of the size of these partions as indicating how likely it is that wwe converge to any specific peak.
+
+** [#A] Experiment: How does dataspace change for changes in parameter space
+Have a dataset, train a network on it. Check which directions are broadest. Move in these directions, check how this effects the solution that we find.
+
+*** Extended: How do boundary traces look?
+Traving out in dataspace all boundaries, when moving along the optimality boundary will create an area, and any confuration of parametres in the open set of the optimality peak will not create bountaries that lie ounside the this trace in dataspace. (This is a prediction)
+
+** [#A] Come up with procedures to merge networks
+Generate networks from functios. Figure out how to merge the networks. That allows us to get a better understnadning of how modules are embeded in the weights.
+*** TODO
+- We need to think about how this relates to internal structure. This could be the next step
+- Ideally we first make a theory that makes predictions about this situation, and then use the experiment to validate the theory.
+
+*** Predictions
+Moving around on the optimality peak will always smoothly interpolate between solutions found.
+** [#C] Thomas Improved experiment (broad peak does not correspont to the network being more compressible)
+In a classification setup, train the network to match a seperation line perfectly. Make the network minimal in size (i.e. as few parametres as possible, while still being able to reproduce the data). Find the broadest peak. Check if there is more than one point in the peak. If there is, then that implies that no parameters of the network can't be removed, as we use the network that is the minimal size already.
+
+Broad peaks don't correspond to more parameters can be removed then.
+** [#C] AND is not reducable even though it has a broad peak
+Have a neuron 3 neural network that computes AND, then we have many configurations of parameters that reproduce AND. They are all in the same peak, but no parameter can be removed.
+
+# --\
+     # -- output
+# --/
+
+In the network we have 2 weights and 1 bias.
+** What does it mean that a computation is done with regard to input parameters
+E.g. normally we can think of a computation as a function. E.g. $f(x) = x^2$. However when we are talking about otpmiality peaks, we are not interested in the behaviour of the network on every possible input, but only on the inputs of the training data set.
+
+The same hold for the computations that are happening in subnetworks. We only care about what they output on specific inputs, that depend on the inputs to the network and any "preprocessing" that has been done as the data flows through the network, untill it reaches the inputs of the subnetwork.
+
+** <2022-07-09 Sat> Theory
+*** TODO Think about optimality of the compression (how optimal is a structure at compressiong something)
+**** 
+*** What would a representation look like
+*** On Compression
+ I am using compression now to mean: Given an object $A$, $(B, d)$ is encoding A if $d(B) = A$. $(B, d)$ is a compressed version of $A$ if $d(B) = A$ and $mem(A) > mem((B,d))$, were $mem$ is a function returning the number of bits needed to store the object. Let $(B^*, d^*)$ be such that there is no other $(B',d')$ with $mem((B',d')) < mem((B^*,d^*))$ and $d(B') = A$
+ 
+**** Types of compression
+At first I thought there were two types of compression. Compression which works by ignoring irelevant parts of the data, and compression that encodes and decodes the data in a lossess maner.
+
+Now it seems like these are the same. Compression just might always be omitting redundant information. This always manifests in ignoring some part of the input.
+
+Is this correct? Are you ignoring input when you are
+
+**** Compression for interpretability
+When would a compressed representation that we extract actually be good for interpretablity?
+
+TODO
+- We want to have the compression pay attention to what is useful
+- We probably don't want to literally run a compression algorithm in the network. That would probably normally decrease interpretability.
+*** Initial segments contain all relevant information
+Lets consider a network that reproduces the training data.
+
+For any datapoint we can think of every layer having all the information that is needed to decode the label.
+
+We can also think of any initial segment of the network as encoding all the neccesary information to regerenerate the label, for a given input.
+
+*** Algorithm translation; e.g. python -> feed forward neural net
+This can give an example for how a compression algorithm can look inside a neural network. This does not mean that it is actually the algorithm that the network learns.
+
+A general approach would allow us to get an example for any algorithm, for how it can be implemented in a neural network. By tweaking the translation and trying different algorithms we might be able
+
+The reverse could be useful for microscope AI.
+
+*** Do broad peaks mean that parameters can be removed
+I think the idea now is to check if the broadness of a basin always indicates that some parameters are superfluous, or if it is possible that even in a broad basin all parameters are needed.
+Consider that objects that are worth 1$ are red and spherical, and objects worth -1$ are green and square. If we want to determine the value of an object, we can use the following functions:
+| f : color → ℝ           | f : shape → ℝ           |
+| red ↦ 1                 | spherical ↦ 1           |
+| green ↦ -1              | square ↦ -1             |
+
+| f : {color + shape} → ℝ | f : {color + shape} → ℝ |
+| red ↦ 1                 | spherical ↦ 1           |
+| square ↦ -1             | green ↦ -1              |
+
+If we know the color and shape of an object at a certain point in the network (this might have been computed or given as input), then if we can switch between using these functions by just changing two bits in the parameters, all of these points would be next to each other in the parameter space (when parameters are bits the parameter space is not continuous). If the network is optimal when using one of the functions, it would still be optimal when we switch to another, giving us a broad peak.
+
+Now if computing the value is important, then you need one of these functions. You can never remove them, even though we are on a broad peak. The goal of the experiment is to check whether this thing happens in practice for broad peaks. The same argument applies to a continuous parameter space.
+
+In the continuous case: You might be able to use red, green, and blue as features at some point in the network. However, all of the computations you perform after you computed the colors would also work for the colors Raspberry Ice Red, Cyan, and Aquamarine. So we assume that if we compute any one of the two-color sets, we reproduce the data. Lets, now also assume that we reproduce the data for any interpolations between (red, Raspberry Ice Red) (green, Cyan) (blue, Aquamarine).
+
+In that case, we have a very broad peak. However, it is not clear how many of the parameters that are used to compute the colors (and the interpolations) are superfluous. Perhaps less than the broadness of the peak would indicate.
+
+If the color interpolation is a separate computation (not intermingled with the color computation) then we might be able to remove it. This would preserve just the optimum of the original colors we started with, i.e. red, green, and blue. This would collapse the broad peak to a single point (considering only dimensions relevant for color computation).
+
+In practice, the interpolation computation might be intermingled in such a way with the color computation that we can't remove them as it would blow off the whole peak. If that would be the case then we again have a broad peak without being able to remove parameters.
+
+Imagine that in the color computation we need a weight of 3. If the interpolation happens because that weight is varying between 3 and 4 (e.g. 3 for green, 4 for cyan) then we probably can't remove the weight without blowing off the whole peak.
+
+*** Finding Peaks by vector field influx
+Compute a grid of points in the loss landscape. Create a sparse vectorfield by placing the gradients as vectors on the points evaluated. Compute the point of minimum divergence of the vector field. Evaluate this point next. Repeat.
+*** Finding Peak extend
+**** by equidist politope testing
+When we hit an optimum, create some politope with verticies equally distanced from the optimum, and thes the vertecies for if they are still optimal. Now do the same around the new points that are found to be optimal.
+
+Probably do some binary-search-increase of politope volume if you where going in a direction and did not hit anything for a long time.
+
+Also we don't need to test points that are inside previous plitopes.
+
+**** by manifold edge bouncing
+Find an optimal point. Calculate the hessian, to determine which directions you can move in without changing the loss (that have 0 slope). Choose a random vector to move in, that is zero in all dimensions were the slope is not zero. Move in that direction in the space, for some distance (this distance should probably depend on the last coulpe of hessians, which we use to estimate the broadness of the peak).
+
+We move in that direction until we hit a point that is not optimal anymore. Then we calculate the normal vector of the boundary of the optimal regon, and bounce off, taking into account our incident angle and the normal vector (the angle of reflection should be the same as the angle of incident).
+
+All of this might not really work, because the dimensionality might be very high. This means that there is "a lot of room" to move around.
+
+**** by walking on manifold boundary
+This is similar to bounding on the manifold, but now we try to trace a math that tries to be on the edge of the optimality peak. We could do this by moving orthogonal to the boundary normal, and then if shoot off the optimal region, we perfrom optimization of the network to get back to the optimim. If we don't shoot off the optimum, we can move back towards the last position, in a sort of boomerang movement, i.e. in an arching path that is arched in the oposite direction the last normal pointed to.
+
+**** Ray projection
+We could simply shoot rays in every direction when we hit an optimum (or at least many directions). If we have 10,000 parameters, we probably still can shoot millions of rays in a resonable ammonut of time.
+*** Ideas
+**** In one broad landscape, it one peak, it might be always the case, that there is a network that is minimal in complexity in the sense that you can remove all unneccesary parameters.
+Most of the configurations will be of the type such that you can't remove anything though, because the parameters are too intertwined.
+**** Can we temporarly modify the loss landscape, e.g. by modifying the loss function or archetecture such that it gets easier to calculate the peak extend.
+**** In the case of binary parameters selecting between the four functions in my example, it seems that you probably could remove the binary selection mechanism? This would mean that you actually can remove parameters.
+*** Experiment
+**** Computation of basis needs to need minimal number of parameters to be computed
+**** You need to be able to smoothly interpolate between the two basis (or the wrole network reproducing)
+**** Learn a function of two vectors and then add them together?
+It seems that a basis should be learned.
+**** Make it related to word embedings?
+*** Exp 2
+**** Use L1 regularisation on simple vector function.
+**** 
+*** Idea: Associate a distance function to a neural network (like raymarching)
+In raymarching we are defining the distance function directly, wich induces a space that is filled in at certain parts.
+
+When visualising a loss landscape, this loss landscape is induced by the neural network and tells us something interesting about it.
+*** Idea: Archetecture learning
+It seems that there exsists an algorithm that we colud use to dynamically have a network learn the archetecture it should use. This algorithm would include the possiblity to learn which weights to share.
+
+This algorithm seems very powerful, and might be enough to enable online learning. At least in a primitive sense, were the network can just add new connectios and train them while holding previous ones constant.
+* Experiments
+** [#A] [BASIC] How does a neural network change for small changes in the input dataset
+Train a network on a dataset, e.g. of countries and captitals like (france, paris). Train a second network on the same dataset, but with one datapoint being different. How does this change the second network from the first. Can we identify small changes in the network? How do these changes look?
+
+- We probably want to use the same initialisation
+- Use regularisation term to make the networks close to each other.
+- Don't train the second network from scratch but finetune it.
+*** Multiple modules might be there that do the same thing on the input data, but work completely differently, if we don't have sparcity
+*** We probably want to have sparsity
+*** Start with a simple circut example
+*** Predictions
+- Multiple parts in the network will change
+
+** What if have data that can't be compressed. How large does a neural network need to be in order to perfectly reproduce it.
+There should be a minimum theoretical size the network needs to have to reproduce this data. Determine that minimum ammonut and how much easier it gets for the network to leran the data, as we increase the size of the network (or increase the networks espessability in other ways).
+
+TODO how do we generate data that is not compressable?
+** What if data is highly compressible
+We could have data that just maps all of the inputs to one output (e.g. in a one hot encoding).
+
+** Figure if
+Take a small neural network and give it a dataset that completely saturates the neural network. Saturate here means that the neural network does not have any possibility anymore to store more information.
+
+This could be done with a very small network and a very small dataset. Now take this setup and make the network only a tiny bit bigger. Now exhaustively check all weights, if we can freely vary them without affecting the loss.
+
+Repeat this training setup multiple times, and check how often (if at all) we get weights that can be varied.
+
+To check if weights can be varied without affecting the loss we might just look at the gradient. An extension to this would be to actually plot how the loss changes with regard to the varing of a parameter, over some range of values. Seeing no change in loss for a range of values would be a stronger result than having a zero gradient.
+
+Infact, if our network was optimal (e.g. the value of a parameter was at the bottom of a parabula with regards to the loss), then the gradient would be zero, or at least very small.
+
+TODO How do we determine when the network is saturated.
+** We should have a procedure to find broad peaks, and ideally the broadest peaks.
+* Feedback
+** Interim Report feedback
+*** FULL
+The groups are all doing different things, but the feedback I want to give is similar, so here's one shared piece of feedback.
+What are we aiming for? Presumably something like a True Name of information representation or computation performed in a net. That's pretty hard; we're probably not going to get the right operationalization right out the gate. So, the purpose of what we're doing now is to get more bits of information about what the relevant True Name operationalization would be.
+Several groups are testing various proxies for whether two trained nets "do the same thing" internally. Those experimental tests are useful mainly insofar as they steer us toward a True Name of "doing the same thing internally". The point of the experiments is not to just try out some proxy! The point of the experiments is to gain information which will steer you towards the right operationalization. What things can you look at to steer that search? What interesting questions/confusions do you have which would change how you want to operationalize two nets "doing the same thing"? If you don't expect an experiment to update you significantly on what the right True Name should look like, then come up with a different experiment.
+And besides experiment, how else can you get bits of information about how to best operationalize "doing the same thing" (or "information representation", or etc)? Think up toy models or real-world examples, and consider how your operationalization should intuitively handle them. What are the unifying patterns across your intuitions in lots of examples? Or, you could try a builder/breaker approach, where you come up with an operationationalization and then look for examples where it diverges from intuitively-correct answers, and iterate. Or, you could look for desiderata which you expect a True Name to satisfy, or constraints which shape how things work.
+*** Do experiments to get more information about what a true name looks like. They should update you on what a good operationalisation looks like.
+*** What questions/confusions to we have that could change how we want to operationalize "doing the same thing" for networks?
+*** How else can we get information of what is the right operationalisation (besides experiments)
+**** Think up toy models of real world examples and go through how an operationalisation would handle them
+***** What are unifying patterns accross examples?
+**** Build things then try to break them, then fix the breakage
+**** Define diseterata of a solution to narrow the search space iteratively, constraining how the solution can look.
+* Results
+** You can have the network that has identity
+** You can have a nework with as many weight being zeros as possible
+* Questions
+** How many peaks are there?
+My guess is very many, as a very high dimensional space would have a lot of space.
+
+* Ask John
+** Can we ask question, e.g. like the following:
+** do you think of a classic supervised setup, or something more like a autoencoder (does it apply to the fist case)
+** Check with john if our inerpretation of compression actually makes sense, in terms of memory needed to store the data VS inputs + network
+Also ask about the problems that we then get.
+- You could have a network that does not compress the data and yet still have broad peaks (broad basins at global optima), in the case where we have a few datapoints and a ton of parameters in the network.
+* Report
+** <2022-07-11 Mon>
+This far we have gathered many ideas. We only list the best ones.
+** Ideas 
+*** Iteratively build up equality of computations by adding more properties
+We want to check when computatinos are equivalent to one another. This would allow us to induce a partial order of abstraction. The following specefies a procedure for bulding up this order.
+
+We restrict ourself to the case of comparing two neural networks that have the same archetecture but possibly parameters set to different value. First look at the two extremes. We can say that two neural networks implement the same computations if they are exactly the same, meaning they have the same parameter assignments. On the other extreme, we can consider two networks the same if their input/output behaviour is the same.
+
+We now start form the "bottom" (equal parameter assignmenst means equal networks) and work our way up. We do this by adding properties that correspond to the intuitive notion of "calculating the same algorithm". When we have defined a property, we can start to use it when defining other properties. If we consider the powerset of all the properties, then this gives us a graph, where each node corresponds to a particular abstraction about how to think about when computations implemented by a neural network are equal.
+
+Here is a list of properties that don't change computational equality we have already considered:
+- Switch neurons in the same layer
+- Duplicate computation used in the same way (e.g. instead of computing f(x) compute 0.5 * f(x) + 0.5 * f(x))
+- The dependency graph of computations is equal (e.g. in f(g(x), h(y)) it does not matter if we calculate g or h first)
+- Only parameters that don't contribute to the computation differ (e.g. some computation happens but it never changes the output, because it is multiped by a zero weight at the end)
+- Computations vary by constant factors (e.g. f(x) = (g(x*2))/2 in such a way that the computational steps of g are the same as the ones from f, only that they are always twice as large, or something like that)
+
+If we consider that we have some set of parameter assignments P, for the used neural network archetecture, then each possbile set of properties induces a partitioning on P. The idea is that as long as we have properties that make intuitive sense, that are not identical
+
+Searching for which of our properties are implied by other properties and figuring out what properties are implied by which sets of properties might be valuable. For example, it might be the case that properties that imply many desired properties, that we thought of, imply many desired properties that we have not thought of yet.
+
+The goal is not to find the perfect set of properties to get the perfect notion of algorithmic equality, rather the idea is (at least in the begining) to find as many properties as possible that could lead to useful notions of equality in some contexts. We operate under the assuption that it might be the case that different notions of computational equality will be useful in different contexts.
+
+So we are building up a set of properties that we can use to check if two neural networks of the same archetecture implement the same computation. Any subnetwork in a neural network can be seen as a neural network of a particular archetecture. That means this procedure can also be applied to any subnetwork of a neural network.
+
+We could also start to add properties for when computations differ. However, we are not clear yet on how this should be combined with properties of when computations are the same. This might lead to contradictions. We might be able to utilise this in a desirable way though. Another disadvantage is that we don't get nice partitions out, but just get to say which elements can't be in the same partition.
+
+Properties like this would be:
+- Computations with different input output behaviour are different
+
+The idea is that we think of the partitionings as being more and more abstract descriptions, i.e. higher level descriptions of what is going on in the neural network.
+
+*** Detecting Network modules
+We can view a neural network as containing many subnetworks. If we think of the network as a graph, then we can think of the set of all of the connected subgrahps. Each of these subgraphs has computational behaviour associated with it. We now want to compare the computational behaviour of these subgraphs. We want to compare them over ranges of inptus, meaning that we want to know, which computational behaviours overlap over which inputs.
+
+We want this information in order to calculate the "module redundancy" of the network. For example, consider that there are two subgraphs $A$, $B$. They have the following computational behaviour:
+
+$A(x) = B(x) = x^2$
+
+If $A$ and $B$ are in the same layer, it would seem that you would only need either $A$ or $B$. All computations that make use of $A$ could start to use $B$ instead, making it possible to remove $A$ entirely from the network. The same works for replacing $B$ with $A$. It is not neccesary that $A$ and $B$ are in the same layer. The important thing is that "layer dependencies" are satisfiable. With that I mean that if $A$ is in layer one, and $B$ is in layer 10, then any "pipeline" through the network that reaches at layer 10 a point in the pipeline where $f(x) = x^2$ needs to be computed, can't use $A$, but can use $B$.
+
+We also don't need $A(x) = B(x)$. If we only care about good performance on the training data (e.g. replicating it), we can simply ensure that in any pipeline, the result at each step in the pipeline is unchanged. For example, if we have a dataset with two datapoints, then we will only have two computational pipelines. In the pipelines for step 5, we need to use the function $f(x) = x^2$.
+
+Let $P^{(n)}$ denote the n-th pipieline. Let $P^{(n)}_m$ denote the result of the m-th computation step in the pipeline. So now we have that $P^{(1)}_5 = \left(P^{(1)}_4\right)^2$ and $P^{(2)}_5 = \left(P^{(2)}_4\right)^2$. To get zero loss we don't need $f(x) = x^2$, but only a function:
+
+$$
+g(x) = \begin{cases}
+        x^2, &\text{for } x = P^{(1)}_4} \lor x = P^{(2)}_4}\\
+        anything, &otherwise
+\end{cases}
+$$
+
+
+TODO
+- Define pipeline
+- Add for each example an example another of how it could look in a simple feed forward neural network.
+
+For all inputs $i \in I$, for each subpart of the network (that is activated) compute the input output behaviour.
+
+Now compare all these subparts.
+** Experiments to do
+*** Look how the boundary changes in dataspace when varing parameters on a optimality peak
+Especially look at which directions of change in parameter space, change the seperation line in dataspace how. For example, How does the seperation line change when we move in a direction that does not increase the loss much, compared to a direction that does increase the loss a lot.
+
+*** And gate experiment
+Consider a 3 neuron network that models the binary AND.
+
+[[/mnt/data_main/org/main/svgs/AND_network.png]]
+
+There are many configurations that produce the correct results if the inputs are 0 or 1. You can interpolate between the parameters, and still get the same result, meaning that there is a broad peak (there are porbably multiple). However none of the parameters can be removed. This menas that the network can't be made to use less memory by removing weights.
+
+However, for different notions of smallness we could probbaly make it even smaller. If we store only the bits of the weights to the precision that is needed, then we would probably still get 
+
+- Is the and gate a broad peak
+- How does the optimality peak(s) looks visualized as a 3D volume
+
+*** Extracting Abstraction
+Using your method that uses the covariance matrix and SVD, extract abstractions from a trained network N and from subparts of N.
+
+- How does this look like for the neural network simulating the AND gate.
+
+*** How does "functionality mushing" look like
+If we have a circut of OR(AND(A, B), AND(C, D)) then we can think of the intuitive mapping to a neural network:
+
+[[/mnt/data_main/org/main/svgs/functionality_mushing_1.png]]
+
+If we have a neural network with the same structure, and train it with SGD, what sort of parameters will we find. In the above picture we can sprit the network into 3 subnetworks, 2 AND gates and 1 OR gate.
+
+- Will the strucutre of the parameters found during training be different (e.g. there are no clear AND and OR subnetworks)?
+- If the network does not look like seperate AND and OR gates, can we figure out what computations it is doing? If the AND and OR gates "mushed" together, can we identify which part of the network does what part of the computatinos of which gates? (Munched here means that the functionality for the different gates are still present, but ovelap with each other in such a way, that the gates can't be easily unrecognised.)
+- If we make the network archetecture smaller (removing parameters), is it still possible for the network to learn the correct mapping?
