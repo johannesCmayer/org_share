@@ -1,0 +1,346 @@
+* Meeting with Tsvi
+** Topics
+*** WHat is the problem with current information theory (how does it fail)
+*** Did MIRI work on fixing information theory
+*** How to be confident in TNs
+*** WHat do you think about symbol grounding
+*** What are other areas of math that are inadequat
+** Stuff
+*** How to be confident in TNs
+*** Why would you pick to work on information theory
+Tsvi does not think that we should work on informaion theory.
+Instead me should think about how we can discover more true names.
+*** What is the problem with current information theory
+**** What wo want out of TN
+- Does not break under optimization
+- Is a very general thing
+**** We do not know how to handle logical information
+**** Chu: what is the generator for specific examples - WHat part of the formulism is worng
+Tsvi: information theory is correct for what it is trying to be. But it is not general in the way we want it. What makes this so?
+
+Chu: We don't know how to handle the case of mutual information
+**** Tsvi has a blogpost on logical information
+**** Tsvi mentions Erics drexlers AI views
+Eric says that we should seperate AI subsystems, such that they do not share information.
+
+He is trying to prevent subagents working together.
+
+Eliezer says that subagents could still acausally coordinate. You do logical information sharing.
+
+With a concept of logical information we could maybe still prevent this. With this we might be able to make the agent bad at acausal reasoning.
+**** Chu: Misunderstanding? Do you actuall have a detailed understanding about what is wrong on information theory.
+Tsvi: What is important: how can we understand what it means that an Agent understands something.
+
+Information theory was not applicable to prolbems I was woring on, when trying the stupid obvious things.
+
+**** Chu: Is there a way to fix information theory
+Tsvi: I do not know.
+
+**** Tsvi: History of group theory
+In the history of group theory, people where already working with things that where like groups, before group theory was set down.
+
+**** Chu: Maybe it makes sense to make group theory work for alignment
+How do you figure out what math will be useful.
+
+Tsvi: Maybe einstein is an example. The important thing that he did was to apply math concepts to induced.
+
+Einstein needed to have figured out some philosophy stuff, to even know what kind of math he needs. That first part is the hard part. It then turend otu that matheamiticans already had figured out what math you need.
+
+**** Tsvi: Persian induction
+Abduction: Generation of hypothesis and concepts.
+
+You need deduction to do induction. You need to predict the consequences of your hypothesis, before you confirm them with induction.
+
+Solomonov induction solves the abduction problem.
+
+We don't know how to do hypothesis generation.
+
+**** Chu
+How often does it happen that you first need to figure out some math stuff, before you can do some original thing.
+
+Chu: How often does this happen to Tsvi?
+Tsvi: I don't do that much math that is realated to alignment.
+
+I have been thinking about genetic enhavcements of humans. There are various math questions here. E.g. tink about samples. What is the distribution over the maximum.
+
+Chu: Physecists don't normally do the math that would help them. How much does the feeling about what math is missing, actually tell you what math is missing.
+
+**** Category theory
+Chu: Nobody undersntands category theory.
+There are probably application areas for category theory, but we do not understand them.
+
+Tsvi: Turing Tarpet - everything is possible, but nothing is easy. The first thing that you want to do is to do engeneering to make programming easier.
+
+Conceptual turing tarpet - foundations like type theory, category theory, set theory are equivalent in some senes.
+
+Category is interisting in what it does. Unification doesn't.
+
+**** Curry howard correspondance
+Judging that a protgram has a particular type is the same as inference rules in logic.
+
+Primordial
+
+**** Chu: what mathematical developments are useful
+How do you actually find these things. Often the thigs that are useful for something where developed by different people.
+
+Tsvi: There seems to be some convergence phenomenon. Useful things will be found.
+
+We should talk about astetics. Math that will be useful eventually will possiblby be more astetically pleasing to mathematicians.
+
+Chu: Somebody says that it is hard to predict how math will actually be useful.
+Tsvi: Astetics might be a better indicator of what is useful, than if somebody tries to predict what ill be useful.
+
+There is an analogy with play here. Playing can be useful.
+
+Chu: Why is this plausible?
+Tsvi: Often hyptheses are just new concepts.
+
+**** Chu: What was the justification behind the logical induction stuff
+Chu: WHat is the practical justification. How would this make alignment easier.
+Tsvi: Scott did Logical induction. There are papers before that that talk about it's importance.
+
+It might be useful for logical counterfactuals.
+
+Chu: But this does not help that much with counterfactuals.
+Tsvi: But we did not know that beforehand.
+
+Chu: People thought that understanding logical induction would be useful for some areas. Such that understanding it would be progress.
+Tsvi: That is right.
+
+Chu: I want to understand how this generazises to determine what is fruitful to work on. It is difficult to predict what practical projects are good to work on.
+
+Tsvi: How much do we really get from logical induction.
+
+Chu: How much did you expect beforehand. It is abotu how well you could predict how useful something is. We want to generalize this, such that we can decide what we should work on.
+
+People choose to work on the math that would be most useful.
+
+Tsvi: That is not how Scott would describe himself. It has a lot to do with research taste. A sense of astetics. He is interested in what is the core of things. He likes to set himself various subproblems.
+
+There approach is often: have a big hard problem and then split it up into small problems and try to solve them.
+
+Chu: The selectio of usefulness is done more on the societal level.
+Tsvi: Scott defnetly thinks about alignment, and tries to make his work useful. Also elegance might actually be useful as stated previously. Elegance might corresponds to canonicalness. Aliens might also invent solomonov induction. In that sense it is canonical.
+
+Canondecety(what is this?)
+
+Chu: How do you go from the high level (how to solve AI alignment) down to the specific thing that you do. 
+
+This does not seem to be what is happeneing emperically.
+TODO ASK: What goes wrong here.
+
+**** Forward chaining and backward chaninig
+Think about what is canonical. Do things that have traction with things. Canondacity helps.
+
+**** Chu: How do you decide what to work on
+Tsvi: I think I make some conceptual progress. [He takes some time to think about how he decides. He does not seem to have thought about this too much].
+
+You need to keep your eyes on the price. You need to ask the same question over and over until you get an answer, until the answer becomes clear. Don't be satisfied before that. Don't substitute an easier problem.
+
+Even if you get traction on a problem you want to still see how this goes back to the
+
+Example on the concepts of terminal values.
+
+**** Corrigibility
+This means that a sytem is correctable. You are instrumentally incentivised to not be corrible, because that might make it such that you can't optimize for your current goals anymore.
+
+? Somehow you can make it defer only to it's future self.
+
+Agents that are capability enough will be able to detect deviations from ideal agency. So such an agent will converge to become better, e.g. converge to having a utility function.
+
+VM-utility function is over worlds. Having a world implies coherence. How does an agent get a world that this function is defined oer. E.g. how does the thing get a world model.
+
+The world model might be made out of basic parts. If your ontology changes such that these parts change, then things can still break.
+
+This is an example of not glossing over these things. Utility function do not solve some fundamental issues. You have to talk about things like ontological crisis and how this changes.
+
+Chu: If you run a hard problem, you are often tempted to smooth other the problem. You should not do this, because this makes you loose track of the orginal question.
+
+Tsvi: We have to do philosophy. Philosophy is very easy to become ungrounded. But you should still do the philosophy.
+
+Chu: You don't want to loose track about the orginial question.
+
+**** Chu: What our group did + REST
+We did the ass tree and then tried to find common bottlenecks. Then we ended up with TN of TN project.
+
+This was going away from what the true question was.
+
+Tsvi: The TN of TNs is a good project.
+
+Chu: Are you saying that you need to do the process of figuring out the bottlenecks multiple times? ANd not get stuck on interpretation?
+
+You could also do: Once we have fonud TNs for TNs, you should go back and do another iteration of the botleneck finding procedure. You need to go back and forth.
+
+Tsvi: Maybe you can go back and forth between TNs of TNs.
+
+Chu: Trying to understand TNs is not done by thinking about how to find TNs of TNs.
+
+IN practice you first build intuitions about what the true name is, and afterwards you are making a rigourous formulism.
+
+Tsvi: Shared computation is not the true name of true names.
+
+As a toy example: Convergent instrumental goals.
+
+Chu: We did think about how to define roundness. But that was going off track.
+Tsvi: You could learn important things about the structure of concepts with this. I did something like this in the past (also try to define roundness).
+
+Chu: It is not clear how we did loose traction with reality.
+It is hard to stay in touch with reality.
+Tsvi: Saying in touch with reality is hard, but that does not mean that we should not do Philosophy.
+Chu: We should do something that is not only philosophy. You want to have a foodback loop that keeps you in check with realitiy.
+
+Tsvi: Asking the same question over and over again is a good  mechanism.
+With Philosophy I mean: Math is a type of philosophy. Enegeneering in some far sense too.
+
+ME(silent): Philosophy is the domain of things where we do not have yet clear boundaries.
+
+Tsvi: Philosophy is conceptual engeneering. Creating concepts and make sure that they make sense. You want to be able to make testable hypotheses using these concepts.
+
+Thinking about high level questions, abstact, and murky questions. It is about all the things where it is hard to get immediate testable feedback.
+
+Chu: People who do bad and good philosophy feel interally the same to people (or at least most people). It semes more frought than work that has emperical tests associated with it.
+
+Tsvi: If you can't internally judge the diference between bad and good philosophy, then that does not imply that you should not do philosophy.
+
+Chu: Doing something more concrete is maybe good.
+
+Tsvi: Grounding the project more seems good, but you need to be really careful with question substitution.
+
+Chu: Maybe we are currently in the state where we don't know the scecrets to doing good philosophy. A secret is something that you can be told, such taht if you are told it, then you just get better.
+
+Do you know anything about these secrets.
+
+Tsvi: One secret: Keep asking the same question. ANother one: refering things back to other things.
+
+When you folow the step of a mathematical argument, then you can follow the steps, before you get the core of the argument.
+
+Chu: So one test is if you can explain it clearly from scratch.
+
+[#A] Tsvi: Another test of understanding is if you can see all the ways in which some thing relates to other things.
+
+There was a mathematian that was going really carefull through understaning some math thing. Then once he did this it was easy for him to spot connections of this concept all around.
+
+Chu: This is similar to John's framing exercises. There you try to explicity try to apply concepts that you know about to domains where you did not apply it so far.
+
+**** How can you be sure that something is a True name?
+Chu: In Jaynes he lists 3 diseterata of probability theory. And there is only one formulation of these 3 diseterata.
+
+Are you saying that if it fails to generalize, then the disterata is wrong.
+
+I am talking about how do you become confident that a TN is sufficient such that you can use it confidently in AI alignment.
+
+**** The universal prior is malign
+When we run Solomonov induction, you die, because some programs that you have as a hypothesis will actually care about trying to break out of the box.
+
+There can be aligents that assign probabilites such that they are upvoted in worlds where they can break out of the box.
+
+**** [#A] Breaking TNs
+If you are confident that there is no goodharding, you can be confident that your abstractions will not be broken.
+
+If you are sure that 99% of objects are safe, then this is different from being 99% sure that there are no objects that are unsafe. A strong optimization process will find in the 1% of the objects that are not sure to be safe an unsafe object if it exsists.
+
+**** When should you move on to the next thing
+If you get a Proof about a TN being good or safe in some senes. When do you hit the point where you know that you should move on to the next topic.
+
+Tsvi: Common arrows bridge (wind resonation, people marching). Here you had a proof that the bridge could support the weight of the bridge and objects on it. 
+
+Chu: Here the problem is that the model was not accurate enought. It did not even take into account resonance and stuff like that.
+
+You want a theorem and what the assumions are for the theorem to hold.
+
+Tsvi: What does it look like when our assumtions are false. There is a difference between implicit assumtions like resonance not mattering, and explicit assumptions such as the compressibility of concrete.
+
+Chu: Probably you need lot's of assumptions to map to the real world.
+
+**** What makes things good theoretical research
+Tsvi: If you can use it to program an aligned AI with it.
+Chu: That does not seem testible.
+Tsvi: If you stop finding failure cases this can be an indicator of success.
+
+You want to get to the pointt where agency/mind is consistent with corrigibility. (?)
+
+**** Mining other fields
+Tsvi: I thought I could mine certian areas for knowledeg/information.
+- Neuroscience
+- Biology (e.g. genes are concepts)
+- Comparative ecology
+  - looking at different behavioural nices
+  - Compare this to neuro anatomy
+
+But these fields where not so good to look at, because nobody understands them. Data does not seem very good. If we would understand this better, then we could do this.
+
+These fields might be too complicated, therefore doing philosophy might be faster.
+
+We might be in a similar situation with ML. There we also do not understand what is going on.
+*** Polimathery
+Chu: [Lists about EAG guy]
+
+Tsvi: You should study the things that you are interested in. If you are interest into something so much that you can study it for 10 a day, then do it.
+
+If it requires efford to start studying, then focus this efford for studying math.
+
+[#A] You should focus most of your energy on solving the actual problem. This is the most important thing.
+
+This starts to tune what is interesting to you, based on what is important for solving the core problem.
+
+Math is the most important thing.
+*** Chu: What is the mostuseful you found that is not math
+Tsvi: You can learn things in a mathematical way. E.g. population dynamics in Biology.
+
+- Programming. This can also be learned in a mathematical way.
+- Linguistics
+  - Thought is very related to languge
+  - Possibly useful to understand ontological shifts
+- Philosophy (useful, but hesetant to reccemend it)
+  - Late witgenstein (fights with him in a useful way)
+  - Quine
+  - Heidegger (more hesetant to recommend
+  - Shopenhauers
+- ANtropology
+- ANimal behaviour
+*** Lanuage
+Tsvi: Language does not consist of pointers.
+
+Chu: In social science, you can hear about signaling. Then they start to interpret everything as just social signaling. E.g. Love is just something like that. This causes an ontological crisis.
+
+Tsvi: Ignoring all signaling is not reality tracking.
+
+*** Personal ontological shifts
+Chu: I was ditressed by the idea that I am not a unified agent. That there are different thought processes. 
+
+Me: I thought I was going to die when I will go to sleep, and my brain could still make up a story to resolve that crisis.
+
+Tsvi: There are different agents in the brain, and some of these can get distrupted without affecting the other ones.
+
+*** John's abstractions
+Chu: How useful do you think John's abstraction work is?
+
+Tsvi: What John's states explicititly does not seem like the true name of abstractions. There semes to be other stuff that what he is talking about.
+
+Chu: The idea is that you want to 
+
+Tsvi: Problems with informations are going to show up here.
+
+Chu: You have a network of low level variables. You now want to figure out what variables correspond to higher level concepts/abstractions.
+
+Tsvi: So this is similar to compress data, in the sense of removing redundant information.
+
+Chu: You are supposed to find where the clusters are.
+
+QUesent
+
+** Mentioned reading/misc
+*** The universal prior is malign
+*** Common arrows bridge (wind resonation, people marching)
+*** Isometries of groups
+** My topics
+*** Do you study type theory - what are good learning resources
+*** Present discover science algorithm and align it - idea
+
+** Post meeting
+*** Chu - If you want to study type theory, then talk to me
+**** Colud study LEAN
+**** Make own Proof assistant
+**** Not sure how useful this would be
+** Highlights
+*** 
